@@ -10,7 +10,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Mark a field as a Page Object Component that should be automatically created by Selenium Testing Toolbox.
+ * Mark a type or a field as a Page Object Component that should be automatically created by Selenium Testing Toolbox.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -24,9 +24,9 @@ import java.lang.annotation.Target;
  * @since 1.0.0
  *
  */
+@Inherited
 @Target({ TYPE, FIELD })
 @Retention(RUNTIME)
-@Inherited
 @Documented
 public @interface PageComponent {
 
