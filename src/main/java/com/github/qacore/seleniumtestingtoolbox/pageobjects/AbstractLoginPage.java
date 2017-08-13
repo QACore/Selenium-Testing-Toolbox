@@ -7,7 +7,7 @@ import org.openqa.selenium.security.Credentials;
 import com.github.qacore.seleniumtestingtoolbox.WebDriverContext;
 
 /**
- * 
+ * This abstract class indicates that the classes executes the basic actions of the <b>Login Page Object</b> pattern.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>

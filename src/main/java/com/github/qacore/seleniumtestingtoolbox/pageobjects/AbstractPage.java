@@ -6,7 +6,7 @@ import org.openqa.selenium.internal.WrapsDriver;
 import com.github.qacore.seleniumtestingtoolbox.WebDriverContext;
 
 /**
- * 
+ * This abstract class indicates that the classes executes the basic actions of the <b>Page Object</b> pattern.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -66,13 +66,11 @@ public abstract class AbstractPage<I extends AbstractPage<I>> extends WebDriverC
      * <p>
      * This behaviour makes it readily visible when a page has not been loaded successfully, and because an error and not an exception is thrown tests should fail as expected. By using Error, we also allow the use of junit's "Assert.assert*" methods.
      * </p>
-     *
-     * @return Itself.
      * 
      * @throws Error
      *             When the page is not loaded.
      */
-    public abstract I isLoaded() throws Error;
+    public abstract void isLoaded() throws Error;
 
     /**
      * The URL to load. It is best to use a fully qualified URL.
@@ -90,7 +88,7 @@ public abstract class AbstractPage<I extends AbstractPage<I>> extends WebDriverC
     protected I itself() {
         return (I) this;
     }
-    
+
     @Override
     public String toString() {
         return "Page(" + this.getUrl() + ")";
