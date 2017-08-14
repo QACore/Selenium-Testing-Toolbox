@@ -79,24 +79,24 @@ public abstract class AbstractPage<I extends AbstractPage<I>> extends WebDriverC
     public abstract void isLoaded() throws Error;
 
     /**
-     * Checks if the page is open.
+     * Checks if the page is opened.
      * 
      * @param path
      *            The URL path after {@link #getUrl()}
      * 
-     * @return {@code true} if is open. Otherwise, {@code false}.
+     * @return {@code true} if is opened. Otherwise, {@code false}.
      */
-    public boolean isOpen(String path) {
+    public boolean isOpened(String path) {
         return this.getWrappedDriver().getCurrentUrl().equals(this.getUrl() + path);
     }
 
     /**
-     * Checks if the page is open.
+     * Checks if the page is opened.
      * 
-     * @return {@code true} if is open. Otherwise, {@code false}.
+     * @return {@code true} if is opened. Otherwise, {@code false}.
      */
-    public boolean isOpen() {
-        return this.isOpen("");
+    public boolean isOpened() {
+        return this.isOpened("");
     }
 
     /**
