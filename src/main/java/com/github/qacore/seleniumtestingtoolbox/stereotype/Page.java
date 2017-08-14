@@ -1,7 +1,6 @@
 package com.github.qacore.seleniumtestingtoolbox.stereotype;
 
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
@@ -9,8 +8,10 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.ParallelPageFactory;
+
 /**
- * Mark a type or a field as a Page Object that should be automatically created by Selenium Testing Toolbox.
+ * Mark a field as a Page Object that should be automatically created by Selenium Testing Toolbox.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -19,11 +20,13 @@ import java.lang.annotation.Target;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
+ * @see ParallelPageFactory
+ *
  * @since 1.0.0
  *
  */
 @Inherited
-@Target({ TYPE, FIELD })
+@Target(FIELD)
 @Retention(RUNTIME)
 @Documented
 public @interface Page {

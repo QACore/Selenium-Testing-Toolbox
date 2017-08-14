@@ -1,7 +1,6 @@
 package com.github.qacore.seleniumtestingtoolbox.stereotype;
 
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
@@ -10,7 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Mark a type or a field as a Page Object Component that should be automatically created by Selenium Testing Toolbox.
+ * Mark a field as a Page Object Component that should be automatically created by Selenium Testing Toolbox.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -25,7 +24,7 @@ import java.lang.annotation.Target;
  *
  */
 @Inherited
-@Target({ TYPE, FIELD })
+@Target(FIELD)
 @Retention(RUNTIME)
 @Documented
 public @interface PageComponent {
