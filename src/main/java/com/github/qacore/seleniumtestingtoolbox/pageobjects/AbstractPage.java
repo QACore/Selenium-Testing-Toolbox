@@ -27,19 +27,19 @@ public abstract class AbstractPage<I extends AbstractPage<I>> extends WebDriverC
 
     public AbstractPage(WrapsDriver driverContext) {
         super(driverContext);
-        
+
         ParallelPageFactory.initElements(this);
     }
 
     public AbstractPage(WebDriver webDriver) {
         super(webDriver);
-        
+
         ParallelPageFactory.initElements(this);
     }
 
     public AbstractPage() {
         super();
-        
+
         ParallelPageFactory.initElements(this);
     }
 
@@ -47,7 +47,7 @@ public abstract class AbstractPage<I extends AbstractPage<I>> extends WebDriverC
      * Load the page in the current browser window.
      * 
      * @param path
-     *            The URL path after {@code getUrl()}.
+     *            The URL path after {@link #getUrl()}
      * 
      * @return Itself.
      */
@@ -77,6 +77,27 @@ public abstract class AbstractPage<I extends AbstractPage<I>> extends WebDriverC
      *             When the page is not loaded.
      */
     public abstract void isLoaded() throws Error;
+
+    /**
+     * Checks if the page is open.
+     * 
+     * @param path
+     *            The URL path after {@link #getUrl()}
+     * 
+     * @return {@code true} if is open. Otherwise, {@code false}.
+     */
+    public boolean isOpen(String path) {
+        return this.getWrappedDriver().getCurrentUrl().equals(this.getUrl() + path);
+    }
+
+    /**
+     * Checks if the page is open.
+     * 
+     * @return {@code true} if is open. Otherwise, {@code false}.
+     */
+    public boolean isOpen() {
+        return this.isOpen("");
+    }
 
     /**
      * The URL to load. It is best to use a fully qualified URL.
