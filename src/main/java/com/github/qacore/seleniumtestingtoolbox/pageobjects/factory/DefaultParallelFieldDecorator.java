@@ -54,7 +54,7 @@ public class DefaultParallelFieldDecorator implements ParallelFieldDecorator {
 
     @Override
     public Object decorate(ClassLoader loader, Field field) {
-        if (!(WebElement.class.isAssignableFrom(field.getType()) || isDecoratableList(field))) {
+        if (!this.hasSupport(field)) {
             return null;
         }
 
@@ -78,6 +78,8 @@ public class DefaultParallelFieldDecorator implements ParallelFieldDecorator {
             try {
                 Constructor<?> constructor = field.getType().getConstructor();
                 constructor.setAccessible(true);
+                
+                object = constructor.newInstance();
             } catch (NoSuchMethodException e) {
                 throw new RuntimeException("@PageComponent field must have an empty constructor.", e);
             } catch (Exception e) {
@@ -88,6 +90,10 @@ public class DefaultParallelFieldDecorator implements ParallelFieldDecorator {
         }
 
         return object;
+    }
+    
+    protected boolean hasSupport(Field field) {
+        return WebElement.class.isAssignableFrom(field.getType()) || this.isDecoratableList(field) || field.isAnnotationPresent(PageComponent.class);
     }
 
     protected boolean isWebElement(Field field) {
