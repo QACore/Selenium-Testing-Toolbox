@@ -38,7 +38,6 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-// @Getter
 public class DefaultSeleniumElementLocator extends WebDriverContext implements ParallelElementLocator {
 
     private final Field field;
