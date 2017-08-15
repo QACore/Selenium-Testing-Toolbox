@@ -1,5 +1,6 @@
 package com.github.qacore.seleniumtestingtoolbox.pageobjects.factory;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -20,6 +21,7 @@ import com.github.qacore.seleniumtestingtoolbox.pageobjects.ParallelPageFactory;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.ParallelLocatingElementHandler;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.ParallelLocatingElementListHandler;
 import com.github.qacore.seleniumtestingtoolbox.stereotype.PageComponent;
+import com.github.qacore.seleniumtestingtoolbox.stereotype.PageRepository;
 
 import lombok.Data;
 
@@ -54,46 +56,50 @@ public class DefaultParallelFieldDecorator implements ParallelFieldDecorator {
 
     @Override
     public Object decorate(ClassLoader loader, Field field) {
-        if (!this.hasSupport(field)) {
-            return null;
-        }
-
         ParallelElementLocator locator = this.getParallelElementLocatorFactory().createLocator(field);
 
-        if (locator == null) {
-            return null;
+        if (locator != null) {
+            if (WebElement.class.isAssignableFrom(field.getType())) {
+                return this.proxyForLocator(loader, locator);
+            }
+
+            if (List.class.isAssignableFrom(field.getType())) {
+                return this.proxyForListLocator(loader, locator);
+            }
         }
 
-        if (WebElement.class.isAssignableFrom(field.getType())) {
-            return this.proxyForLocator(loader, locator);
+        return this.initDefaultPageBeans(loader, field);
+    }
+
+    protected Object initDefaultPageBeans(ClassLoader loader, Field field) {
+        Object object = this.initDefaultPageBean(PageRepository.class, field, this);
+
+        if (object != null) {
+            return object;
         }
 
-        if (List.class.isAssignableFrom(field.getType())) {
-            return this.proxyForListLocator(loader, locator);
-        }
+        return this.initDefaultPageBean(PageComponent.class, field, this);
+    }
 
+    protected Object initDefaultPageBean(Class<? extends Annotation> annotation, Field field, FieldDecorator decorator) {
         Object object = null;
 
-        if (field.isAnnotationPresent(PageComponent.class)) {
+        if (field.isAnnotationPresent(annotation)) {
             try {
                 Constructor<?> constructor = field.getType().getConstructor();
                 constructor.setAccessible(true);
-                
+
                 object = constructor.newInstance();
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException("@PageComponent field must have an empty constructor.", e);
+                throw new RuntimeException("@" + annotation.getSimpleName() + " field must have an empty constructor.", e);
             } catch (Exception e) {
-                throw new RuntimeException("An error ocurred while calling new() instance of @PageComponent.", e);
+                throw new RuntimeException("An error ocurred while calling new() instance of @" + annotation.getSimpleName() + ".", e);
             }
 
             this.proxyFields(this, object, field.getType());
         }
 
         return object;
-    }
-    
-    protected boolean hasSupport(Field field) {
-        return WebElement.class.isAssignableFrom(field.getType()) || this.isDecoratableList(field) || field.isAnnotationPresent(PageComponent.class);
     }
 
     protected boolean isWebElement(Field field) {
