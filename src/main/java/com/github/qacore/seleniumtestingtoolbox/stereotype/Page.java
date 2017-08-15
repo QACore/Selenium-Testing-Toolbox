@@ -8,7 +8,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.ParallelPageFactory;
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
 
 /**
  * Mark a field as a Page Object that should be automatically created by Selenium Testing Toolbox.
@@ -20,7 +20,7 @@ import com.github.qacore.seleniumtestingtoolbox.pageobjects.ParallelPageFactory;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
- * @see ParallelPageFactory
+ * @see SeleniumPageFactory
  *
  * @since 1.0.0
  *

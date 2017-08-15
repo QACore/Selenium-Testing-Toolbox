@@ -3,8 +3,8 @@ package com.github.qacore.seleniumtestingtoolbox.pageobjects;
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.DefaultParallelElementLocatorFactory;
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.DefaultParallelFieldDecorator;
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.DefaultSeleniumElementLocatorFactory;
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.DefaultSeleniumFieldDecorator;
 
 /**
  * Parallel Factory class to make using Page Objects simpler and easier.
@@ -16,22 +16,24 @@ import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.DefaultParal
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
+ * @since 1.0.0
+ *
  */
-public final class ParallelPageFactory {
+public final class SeleniumPageFactory {
 
     public static void initElements(AbstractPage<?> page) {
-        PageFactory.initElements(new DefaultParallelFieldDecorator(new DefaultParallelElementLocatorFactory(page)), page);
+        PageFactory.initElements(new DefaultSeleniumFieldDecorator(new DefaultSeleniumElementLocatorFactory(page)), page);
     }
 
     public static void initElements(WrapsDriver page) {
-        PageFactory.initElements(new DefaultParallelFieldDecorator(new DefaultParallelElementLocatorFactory(page)), page);
+        PageFactory.initElements(new DefaultSeleniumFieldDecorator(new DefaultSeleniumElementLocatorFactory(page)), page);
     }
 
     public static void initElements(Object page) {
-        PageFactory.initElements(new DefaultParallelFieldDecorator(new DefaultParallelElementLocatorFactory()), page);
+        PageFactory.initElements(new DefaultSeleniumFieldDecorator(new DefaultSeleniumElementLocatorFactory()), page);
     }
 
-    private ParallelPageFactory() {
+    private SeleniumPageFactory() {
 
     }
 

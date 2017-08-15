@@ -28,19 +28,19 @@ public abstract class AbstractPage<I extends AbstractPage<I>> extends WebDriverC
     public AbstractPage(WrapsDriver driverContext) {
         super(driverContext);
 
-        ParallelPageFactory.initElements(this);
+        SeleniumPageFactory.initElements(this);
     }
 
     public AbstractPage(WebDriver webDriver) {
         super(webDriver);
 
-        ParallelPageFactory.initElements(this);
+        SeleniumPageFactory.initElements(this);
     }
 
     public AbstractPage() {
         super();
 
-        ParallelPageFactory.initElements(this);
+        SeleniumPageFactory.initElements(this);
     }
 
     /**

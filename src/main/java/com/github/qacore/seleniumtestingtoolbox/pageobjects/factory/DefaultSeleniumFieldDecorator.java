@@ -17,7 +17,7 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.ParallelPageFactory;
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.ParallelLocatingElementHandler;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.ParallelLocatingElementListHandler;
 import com.github.qacore.seleniumtestingtoolbox.stereotype.PageComponent;
@@ -26,7 +26,7 @@ import com.github.qacore.seleniumtestingtoolbox.stereotype.PageRepository;
 import lombok.Data;
 
 /**
- * Default parallel decorator for use with {@link ParallelPageFactory} or {@link PageFactory}. Will decorate:
+ * Default parallel decorator for use with {@link SeleniumPageFactory} or {@link PageFactory}. Will decorate:
  * <ol>
  * <li>All of the {@link WebElement} fields</li>
  * <li>All of the {@link List}&lt;{@link WebElement}&gt; fields</li>
@@ -46,11 +46,11 @@ import lombok.Data;
  *
  */
 @Data
-public class DefaultParallelFieldDecorator implements ParallelFieldDecorator {
+public class DefaultSeleniumFieldDecorator implements ParallelFieldDecorator {
 
     private ParallelElementLocatorFactory parallelElementLocatorFactory;
 
-    public DefaultParallelFieldDecorator(ParallelElementLocatorFactory parallelElementLocatorFactory) {
+    public DefaultSeleniumFieldDecorator(ParallelElementLocatorFactory parallelElementLocatorFactory) {
         this.parallelElementLocatorFactory = parallelElementLocatorFactory;
     }
 

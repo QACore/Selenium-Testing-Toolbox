@@ -15,13 +15,13 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.Annotations;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverContext;
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.ParallelPageFactory;
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * The default parallel element locator, which will lazily locate an element or an element list on a page. This class is designed for use with the {@link ParallelPageFactory} and {@link PageFactory}. This class understands the annotations {@link FindBy}, {@link FindBys} and {@link FindAll}.
+ * The default parallel element locator, which will lazily locate an element or an element list on a page. This class is designed for use with the {@link SeleniumPageFactory} and {@link PageFactory}. This class understands the annotations {@link FindBy}, {@link FindBys} and {@link FindAll}.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -39,26 +39,26 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 // @Getter
-public class DefaultParallelElementLocator extends WebDriverContext implements ParallelElementLocator {
+public class DefaultSeleniumElementLocator extends WebDriverContext implements ParallelElementLocator {
 
     private final Field field;
     private final By    locator;
 
-    public DefaultParallelElementLocator(WrapsDriver driverContext, Field field) {
+    public DefaultSeleniumElementLocator(WrapsDriver driverContext, Field field) {
         super(driverContext);
 
         this.field = field;
         this.locator = new Annotations(field).buildBy();
     }
 
-    public DefaultParallelElementLocator(WebDriver webDriver, Field field) {
+    public DefaultSeleniumElementLocator(WebDriver webDriver, Field field) {
         super(webDriver);
 
         this.field = field;
         this.locator = new Annotations(field).buildBy();
     }
 
-    public DefaultParallelElementLocator(Field field) {
+    public DefaultSeleniumElementLocator(Field field) {
         super();
 
         this.field = field;

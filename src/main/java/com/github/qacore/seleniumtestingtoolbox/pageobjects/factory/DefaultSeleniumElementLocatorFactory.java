@@ -26,23 +26,23 @@ import lombok.ToString;
  *
  */
 @ToString
-public class DefaultParallelElementLocatorFactory extends WebDriverContext implements ParallelElementLocatorFactory {
+public class DefaultSeleniumElementLocatorFactory extends WebDriverContext implements ParallelElementLocatorFactory {
 
-    public DefaultParallelElementLocatorFactory(WrapsDriver driverContext) {
+    public DefaultSeleniumElementLocatorFactory(WrapsDriver driverContext) {
         super(driverContext);
     }
 
-    public DefaultParallelElementLocatorFactory(WebDriver webDriver) {
+    public DefaultSeleniumElementLocatorFactory(WebDriver webDriver) {
         super(webDriver);
     }
 
-    public DefaultParallelElementLocatorFactory() {
+    public DefaultSeleniumElementLocatorFactory() {
         super();
     }
 
     @Override
     public ParallelElementLocator createLocator(Field field) {
-        return new DefaultParallelElementLocator(this, field);
+        return new DefaultSeleniumElementLocator(this, field);
     }
 
 }
