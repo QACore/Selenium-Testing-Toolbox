@@ -4,7 +4,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.ParallelElementLocator;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
 
 import lombok.Data;
 
@@ -24,18 +24,18 @@ import lombok.Data;
  *
  */
 @Data
-public class ParallelLocatingElementListHandler implements InvocationHandler {
+public class SeleniumLocatingElementListHandler implements InvocationHandler {
 
-    private ParallelElementLocator parallelElementLocator;
+    private ElementLocator elementLocator;
 
-    public ParallelLocatingElementListHandler(ParallelElementLocator parallelElementLocator) {
-        this.parallelElementLocator = parallelElementLocator;
+    public SeleniumLocatingElementListHandler(ElementLocator elementLocator) {
+        this.elementLocator = elementLocator;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         try {
-            return method.invoke(parallelElementLocator.findElements(), args);
+            return method.invoke(elementLocator.findElements(), args);
         } catch (InvocationTargetException e) {
             throw e.getCause();
         }

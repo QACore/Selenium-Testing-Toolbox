@@ -6,8 +6,8 @@ import java.lang.reflect.Method;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.ParallelElementLocator;
+import org.openqa.selenium.internal.WrapsElement;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
 
 import lombok.Data;
 
@@ -27,12 +27,12 @@ import lombok.Data;
  *
  */
 @Data
-public class ParallelLocatingElementHandler implements InvocationHandler {
+public class SeleniumLocatingElementHandler implements InvocationHandler {
 
-    private ParallelElementLocator parallelElementLocator;
+    private ElementLocator elementLocator;
 
-    public ParallelLocatingElementHandler(ParallelElementLocator parallelElementLocator) {
-        this.parallelElementLocator = parallelElementLocator;
+    public SeleniumLocatingElementHandler(ElementLocator elementLocator) {
+        this.elementLocator = elementLocator;
     }
 
     @Override
@@ -40,16 +40,20 @@ public class ParallelLocatingElementHandler implements InvocationHandler {
         WebElement element;
 
         try {
-            element = parallelElementLocator.findElement();
+            element = elementLocator.findElement();
         } catch (NoSuchElementException e) {
             if ("toString".equals(method.getName())) {
-                return "Proxy element for: " + parallelElementLocator.toString();
+                return "Proxy element for: " + elementLocator.toString();
             }
 
             throw e;
         }
 
         if ("getWrappedElement".equals(method.getName())) {
+            if (element instanceof WrapsElement) {
+                return ((WrapsElement) element).getWrappedElement();
+            }
+
             return element;
         }
 

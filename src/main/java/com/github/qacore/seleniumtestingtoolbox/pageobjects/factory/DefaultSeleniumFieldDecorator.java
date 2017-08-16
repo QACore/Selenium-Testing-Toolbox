@@ -15,18 +15,20 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
+import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.ParallelLocatingElementHandler;
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.ParallelLocatingElementListHandler;
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.SeleniumLocatingElementHandler;
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.SeleniumLocatingElementListHandler;
 import com.github.qacore.seleniumtestingtoolbox.stereotype.PageComponent;
 import com.github.qacore.seleniumtestingtoolbox.stereotype.PageRepository;
 
 import lombok.Data;
 
 /**
- * Default parallel decorator for use with {@link SeleniumPageFactory} or {@link PageFactory}. Will decorate:
+ * Default Selenium decorator for use with {@link SeleniumPageFactory} or {@link PageFactory}. Will decorate:
  * <ol>
  * <li>All of the {@link WebElement} fields</li>
  * <li>All of the {@link List}&lt;{@link WebElement}&gt; fields</li>
@@ -40,23 +42,23 @@ import lombok.Data;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
- * @see ParallelFieldDecorator
+ * @see FieldDecorator
  *
  * @since 1.0.0
  *
  */
 @Data
-public class DefaultSeleniumFieldDecorator implements ParallelFieldDecorator {
+public class DefaultSeleniumFieldDecorator implements FieldDecorator {
 
-    private ParallelElementLocatorFactory parallelElementLocatorFactory;
+    private ElementLocatorFactory elementLocatorFactory;
 
-    public DefaultSeleniumFieldDecorator(ParallelElementLocatorFactory parallelElementLocatorFactory) {
-        this.parallelElementLocatorFactory = parallelElementLocatorFactory;
+    public DefaultSeleniumFieldDecorator(ElementLocatorFactory elementLocatorFactory) {
+        this.elementLocatorFactory = elementLocatorFactory;
     }
 
     @Override
     public Object decorate(ClassLoader loader, Field field) {
-        ParallelElementLocator locator = this.getParallelElementLocatorFactory().createLocator(field);
+        ElementLocator locator = elementLocatorFactory.createLocator(field);
 
         if (locator != null) {
             if (WebElement.class.isAssignableFrom(field.getType())) {
@@ -130,13 +132,13 @@ public class DefaultSeleniumFieldDecorator implements ParallelFieldDecorator {
         return field.isAnnotationPresent(FindBy.class) || field.isAnnotationPresent(FindBys.class) || field.isAnnotationPresent(FindAll.class);
     }
 
-    protected WebElement proxyForLocator(ClassLoader loader, ParallelElementLocator locator) {
-        return (WebElement) Proxy.newProxyInstance(loader, new Class[] { WebElement.class, WrapsElement.class, Locatable.class }, new ParallelLocatingElementHandler(locator));
+    protected WebElement proxyForLocator(ClassLoader loader, ElementLocator locator) {        
+        return (WebElement) Proxy.newProxyInstance(loader, new Class[] { WebElement.class, WrapsElement.class, Locatable.class }, new SeleniumLocatingElementHandler(locator));
     }
 
     @SuppressWarnings("unchecked")
-    protected List<WebElement> proxyForListLocator(ClassLoader loader, ParallelElementLocator locator) {
-        return (List<WebElement>) Proxy.newProxyInstance(loader, new Class[] { List.class }, new ParallelLocatingElementListHandler(locator));
+    protected List<WebElement> proxyForListLocator(ClassLoader loader, ElementLocator locator) {
+        return (List<WebElement>) Proxy.newProxyInstance(loader, new Class[] { List.class }, new SeleniumLocatingElementListHandler(locator));
     }
 
     protected void proxyFields(FieldDecorator decorator, Object page, Class<?> proxyIn) {

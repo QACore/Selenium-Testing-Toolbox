@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
+import org.openqa.selenium.support.pagefactory.ElementLocator;
+import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverContext;
 
@@ -20,13 +22,13 @@ import lombok.ToString;
  *         </ul>
  * 
  * @see WebDriverContext
- * @see ParallelElementLocatorFactory
+ * @see ElementLocatorFactory
  * 
  * @since 1.0.0
  *
  */
 @ToString
-public class DefaultSeleniumElementLocatorFactory extends WebDriverContext implements ParallelElementLocatorFactory {
+public class DefaultSeleniumElementLocatorFactory extends WebDriverContext implements ElementLocatorFactory {
 
     public DefaultSeleniumElementLocatorFactory(WrapsDriver driverContext) {
         super(driverContext);
@@ -41,7 +43,7 @@ public class DefaultSeleniumElementLocatorFactory extends WebDriverContext imple
     }
 
     @Override
-    public ParallelElementLocator createLocator(Field field) {
+    public ElementLocator createLocator(Field field) {
         return new DefaultSeleniumElementLocator(this, field);
     }
 
