@@ -7,7 +7,7 @@ import org.openqa.selenium.internal.Locatable;
 import org.openqa.selenium.internal.WrapsElement;
 
 /**
- * 
+ * Augmented {@link WebElement}.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>

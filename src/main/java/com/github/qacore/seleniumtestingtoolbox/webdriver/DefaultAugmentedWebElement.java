@@ -20,7 +20,7 @@ import com.github.qacore.seleniumtestingtoolbox.webdriver.events.EventsControl;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.events.EventsRegistry;
 
 /**
- * 
+ * Augmented {@link WebElement}.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
