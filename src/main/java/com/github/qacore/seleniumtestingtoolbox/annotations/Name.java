@@ -1,6 +1,7 @@
-package com.github.qacore.seleniumtestingtoolbox.stereotype;
+package com.github.qacore.seleniumtestingtoolbox.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
@@ -9,7 +10,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Mark a field as a Page Object Component that should be automatically created by Selenium Testing Toolbox.
+ * This annotation is used to describe a component.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -18,15 +19,27 @@ import java.lang.annotation.Target;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
- * @see Page
- *
  * @since 1.0.0
  *
  */
 @Inherited
-@Target(FIELD)
+@Target({ TYPE, FIELD })
 @Retention(RUNTIME)
 @Documented
-public @interface PageComponent {
+public @interface Name {
+
+    /**
+     * The name of the component
+     * 
+     * @return the value
+     */
+    String value();
+
+    /**
+     * The description of the component
+     * 
+     * @return the description
+     */
+    String description() default "";
 
 }

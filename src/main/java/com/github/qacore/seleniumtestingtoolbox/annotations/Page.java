@@ -1,4 +1,4 @@
-package com.github.qacore.seleniumtestingtoolbox.stereotype;
+package com.github.qacore.seleniumtestingtoolbox.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -8,8 +8,10 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
+
 /**
- * Mark a field as a Page Object Repository that should be automatically created by Selenium Testing Toolbox.
+ * Mark a field as a Page Object that should be automatically created by Selenium Testing Toolbox.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -18,8 +20,7 @@ import java.lang.annotation.Target;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
- * @see Page
- * @see PageComponent
+ * @see SeleniumPageFactory
  *
  * @since 1.0.0
  *
@@ -28,6 +29,6 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 @Retention(RUNTIME)
 @Documented
-public @interface PageRepository {
+public @interface Page {
 
 }

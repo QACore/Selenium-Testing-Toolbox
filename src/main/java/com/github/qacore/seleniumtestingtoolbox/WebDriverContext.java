@@ -3,6 +3,10 @@ package com.github.qacore.seleniumtestingtoolbox;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 
+import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebDriver;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.DefaultAugmentedWebDriver;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.internal.AugmentedWrapsDriver;
+
 import lombok.ToString;
 
 /**
@@ -24,15 +28,31 @@ import lombok.ToString;
  *
  */
 @ToString
-public class WebDriverContext implements WrapsDriver {
+public class WebDriverContext implements AugmentedWrapsDriver {
 
-    private WrapsDriver driverContext;
+    private AugmentedWrapsDriver driverContext;
 
     public WebDriverContext(WrapsDriver driverContext) {
         if (driverContext == null) {
             this.driverContext = WebDriverManager.getDriverContext();
         } else {
-            this.driverContext = driverContext;
+            if (driverContext instanceof AugmentedWrapsDriver) {
+                this.driverContext = (AugmentedWrapsDriver) driverContext;
+            } else {
+                this.driverContext = new AugmentedWrapsDriver() {
+
+                    @Override
+                    public AugmentedWebDriver getWrappedDriver() {
+                        return new DefaultAugmentedWebDriver(driverContext.getWrappedDriver());
+                    }
+
+                    @Override
+                    public String toString() {
+                        return this.getWrappedDriver().toString();
+                    }
+
+                };
+            }
         }
     }
 
@@ -40,11 +60,19 @@ public class WebDriverContext implements WrapsDriver {
         if (webDriver == null) {
             this.driverContext = WebDriverManager.getDriverContext();
         } else {
-            this.driverContext = new WrapsDriver() {
+            AugmentedWebDriver augmentedWebDriver;
+
+            if (webDriver instanceof AugmentedWebDriver) {
+                augmentedWebDriver = (AugmentedWebDriver) webDriver;
+            } else {
+                augmentedWebDriver = new DefaultAugmentedWebDriver(webDriver);
+            }
+
+            this.driverContext = new AugmentedWrapsDriver() {
 
                 @Override
-                public WebDriver getWrappedDriver() {
-                    return webDriver;
+                public AugmentedWebDriver getWrappedDriver() {
+                    return augmentedWebDriver;
                 }
 
                 @Override
@@ -61,7 +89,7 @@ public class WebDriverContext implements WrapsDriver {
     }
 
     @Override
-    public WebDriver getWrappedDriver() {
+    public AugmentedWebDriver getWrappedDriver() {
         return driverContext.getWrappedDriver();
     }
 
@@ -73,7 +101,7 @@ public class WebDriverContext implements WrapsDriver {
         return driverContext;
     }
 
-    protected void setDriverContext(WrapsDriver driverContext) {
+    protected void setDriverContext(AugmentedWrapsDriver driverContext) {
         this.driverContext = driverContext;
     }
 

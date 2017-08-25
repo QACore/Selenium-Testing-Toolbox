@@ -12,11 +12,11 @@ import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverContext;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebDriver;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,43 +41,54 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class DefaultSeleniumElementLocator extends WebDriverContext implements ElementLocator {
 
-    private final Field field;
-    private final By    locator;
+    private final Field  field;
+    private final By     locator;
+    private final String name;
 
     public DefaultSeleniumElementLocator(WrapsDriver driverContext, Field field) {
         super(driverContext);
 
+        AugmentedElementAnnotations annotations = new AugmentedElementAnnotations(field);
+
         this.field = field;
-        this.locator = new Annotations(field).buildBy();
+        this.locator = annotations.buildBy();
+        this.name = annotations.getName();
     }
 
     public DefaultSeleniumElementLocator(WebDriver webDriver, Field field) {
         super(webDriver);
 
+        AugmentedElementAnnotations annotations = new AugmentedElementAnnotations(field);
+
         this.field = field;
-        this.locator = new Annotations(field).buildBy();
+        this.locator = annotations.buildBy();
+        this.name = annotations.getName();
     }
 
     public DefaultSeleniumElementLocator(Field field) {
         super();
 
+        AugmentedElementAnnotations annotations = new AugmentedElementAnnotations(field);
+
         this.field = field;
-        this.locator = new Annotations(field).buildBy();
+        this.locator = annotations.buildBy();
+        this.name = annotations.getName();
     }
 
     @Override
     public WebElement findElement() {
-        return this.getWrappedDriver().findElement(this.getLocator());
+        return this.getWrappedDriver().findElement(this.getLocator(), this.getName());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<WebElement> findElements() {
-        return this.getWrappedDriver().findElements(this.getLocator());
+        return (List<WebElement>) (List<?>) this.getWrappedDriver().findElements(this.getLocator(), this.getName());
     }
 
     @Override
-    public WebDriver getWrappedDriver() {
-        WebDriver driver = super.getWrappedDriver();
+    public AugmentedWebDriver getWrappedDriver() {
+        AugmentedWebDriver driver = super.getWrappedDriver();
 
         if (driver == null) {
             throw new WebDriverException("WebDriver is null. Please, use WebDriverManager.setDriver(WebDriver driver)!");

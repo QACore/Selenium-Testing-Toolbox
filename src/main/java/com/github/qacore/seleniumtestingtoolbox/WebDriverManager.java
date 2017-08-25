@@ -2,7 +2,10 @@ package com.github.qacore.seleniumtestingtoolbox;
 
 import org.openqa.selenium.NoSuchSessionException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.internal.WrapsDriver;
+
+import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebDriver;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.DefaultAugmentedWebDriver;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.internal.AugmentedWrapsDriver;
 
 /**
  * Manage {@link WebDriver}, one per {@link Thread} to support parallel testing.
@@ -19,11 +22,11 @@ import org.openqa.selenium.internal.WrapsDriver;
  */
 public final class WebDriverManager {
     
-    private static final ThreadLocal<WebDriver> webDriver     = new ThreadLocal<>();
-    private static final WrapsDriver            driverContext = new WrapsDriver() {
+    private static final ThreadLocal<AugmentedWebDriver> webDriver     = new ThreadLocal<>();
+    private static final AugmentedWrapsDriver            driverContext = new AugmentedWrapsDriver() {
         
         @Override
-        public WebDriver getWrappedDriver() {            
+        public AugmentedWebDriver getWrappedDriver() {            
             return webDriver.get();
         }
         
@@ -34,32 +37,36 @@ public final class WebDriverManager {
         
     };
 
-    public static WebDriver getDriver() {    	
+    public static AugmentedWebDriver getDriver() {
         return webDriver.get();
     }
-    
+
     public static void setDriver(WebDriver driver) {
-        webDriver.set(driver);
+        if (driver instanceof AugmentedWebDriver) {
+            webDriver.set((AugmentedWebDriver) driver);
+        } else {
+            webDriver.set(new DefaultAugmentedWebDriver(driver));
+        }
     }
-    
-    public static WrapsDriver getDriverContext() {    	
+
+    public static AugmentedWrapsDriver getDriverContext() {
         return driverContext;
     }
-    
+
     public static boolean isOpened() {
         WebDriver driver = webDriver.get();
-        
+
         if (driver == null) {
             return false;
         }
-        
+
         try {
             return driver.getWindowHandles().size() > 0;
         } catch (NoSuchSessionException e) {
             return false;
         }
     }
-    
+
     private WebDriverManager() {
 
     }

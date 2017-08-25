@@ -9,8 +9,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.internal.Locatable;
-import org.openqa.selenium.internal.WrapsElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
@@ -19,11 +17,12 @@ import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 
+import com.github.qacore.seleniumtestingtoolbox.annotations.PageComponent;
+import com.github.qacore.seleniumtestingtoolbox.annotations.PageRepository;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.SeleniumLocatingElementHandler;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.SeleniumLocatingElementListHandler;
-import com.github.qacore.seleniumtestingtoolbox.stereotype.PageComponent;
-import com.github.qacore.seleniumtestingtoolbox.stereotype.PageRepository;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebElement;
 
 import lombok.Data;
 
@@ -132,13 +131,13 @@ public class DefaultSeleniumFieldDecorator implements FieldDecorator {
         return field.isAnnotationPresent(FindBy.class) || field.isAnnotationPresent(FindBys.class) || field.isAnnotationPresent(FindAll.class);
     }
 
-    protected WebElement proxyForLocator(ClassLoader loader, ElementLocator locator) {        
-        return (WebElement) Proxy.newProxyInstance(loader, new Class[] { WebElement.class, WrapsElement.class, Locatable.class }, new SeleniumLocatingElementHandler(locator));
+    protected AugmentedWebElement proxyForLocator(ClassLoader loader, ElementLocator locator) {
+        return (AugmentedWebElement) Proxy.newProxyInstance(loader, new Class[] { AugmentedWebElement.class }, new SeleniumLocatingElementHandler(locator));
     }
 
     @SuppressWarnings("unchecked")
-    protected List<WebElement> proxyForListLocator(ClassLoader loader, ElementLocator locator) {
-        return (List<WebElement>) Proxy.newProxyInstance(loader, new Class[] { List.class }, new SeleniumLocatingElementListHandler(locator));
+    protected List<AugmentedWebElement> proxyForListLocator(ClassLoader loader, ElementLocator locator) {
+        return (List<AugmentedWebElement>) Proxy.newProxyInstance(loader, new Class[] { List.class }, new SeleniumLocatingElementListHandler(locator));
     }
 
     protected void proxyFields(FieldDecorator decorator, Object page, Class<?> proxyIn) {
