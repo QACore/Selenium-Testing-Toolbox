@@ -14,7 +14,7 @@ import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebDriver;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
- * @see 1.0.0
+ * @version 1.0.0
  *
  */
 public interface AugmentedWrapsDriver extends WrapsDriver {

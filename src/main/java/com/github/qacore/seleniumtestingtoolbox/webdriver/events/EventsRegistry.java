@@ -67,11 +67,9 @@ public class EventsRegistry {
 
     /**
      * Dispatch all the events. Example:
-     * <p>
      * <ul>
      * <li>{@code events.dispatch(e -> e.beforeClickOn(WebElement, WebDriver));}</li>
      * </ul>
-     * </p>
      * 
      * @param action
      *            A non-interfering action to perform on the elements.
