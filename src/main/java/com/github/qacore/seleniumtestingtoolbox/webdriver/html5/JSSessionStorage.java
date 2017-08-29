@@ -1,4 +1,4 @@
-package com.github.qacore.seleniumtestingtoolbox.html5;
+package com.github.qacore.seleniumtestingtoolbox.webdriver.html5;
 
 import java.util.ArrayList;
 import java.util.HashSet;

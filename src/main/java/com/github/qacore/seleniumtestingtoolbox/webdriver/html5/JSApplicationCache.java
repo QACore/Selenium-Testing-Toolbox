@@ -1,4 +1,4 @@
-package com.github.qacore.seleniumtestingtoolbox.html5;
+package com.github.qacore.seleniumtestingtoolbox.webdriver.html5;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
