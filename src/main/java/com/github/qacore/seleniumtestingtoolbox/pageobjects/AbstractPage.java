@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.internal.WrapsDriver;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverContext;
+import com.github.qacore.seleniumtestingtoolbox.WebPageFactory;
 
 /**
  * This abstract class indicates that the classes executes the basic actions of the <b>Page Object</b> pattern.
@@ -28,19 +29,19 @@ public abstract class AbstractPage<I extends AbstractPage<I>> extends WebDriverC
     public AbstractPage(WrapsDriver driverContext) {
         super(driverContext);
 
-        SeleniumPageFactory.initElements(this);
+        WebPageFactory.initElements(this);
     }
 
     public AbstractPage(WebDriver webDriver) {
         super(webDriver);
 
-        SeleniumPageFactory.initElements(this);
+        WebPageFactory.initElements(this);
     }
 
     public AbstractPage() {
         super();
 
-        SeleniumPageFactory.initElements(this);
+        WebPageFactory.initElements(this);
     }
 
     /**

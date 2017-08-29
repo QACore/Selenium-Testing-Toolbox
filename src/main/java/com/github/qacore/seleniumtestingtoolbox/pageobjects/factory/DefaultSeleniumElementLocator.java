@@ -14,15 +14,15 @@ import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.pagefactory.ElementLocator;
 
+import com.github.qacore.seleniumtestingtoolbox.WebPageFactory;
 import com.github.qacore.seleniumtestingtoolbox.WebDriverContext;
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebDriver;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * The default selenium element locator, which will lazily locate an element or an element list on a page. This class is designed for use with the {@link SeleniumPageFactory} and {@link PageFactory}. This class understands the annotations {@link FindBy}, {@link FindBys} and {@link FindAll}.
+ * The default selenium element locator, which will lazily locate an element or an element list on a page. This class is designed for use with the {@link WebPageFactory} and {@link PageFactory}. This class understands the annotations {@link FindBy}, {@link FindBys} and {@link FindAll}.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>

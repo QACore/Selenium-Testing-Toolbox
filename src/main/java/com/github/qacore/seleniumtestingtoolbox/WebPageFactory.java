@@ -1,13 +1,14 @@
-package com.github.qacore.seleniumtestingtoolbox.pageobjects;
+package com.github.qacore.seleniumtestingtoolbox;
 
 import org.openqa.selenium.internal.WrapsDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.AbstractPage;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.DefaultSeleniumElementLocatorFactory;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.DefaultSeleniumFieldDecorator;
 
 /**
- * Parallel Factory class to make using Page Objects simpler and easier.
+ * Web Page Factory class to make using Page Objects simpler and easier.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -19,7 +20,7 @@ import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.DefaultSelen
  * @since 1.0.0
  *
  */
-public final class SeleniumPageFactory {
+public final class WebPageFactory {
 
     public static void initElements(AbstractPage<?> page) {
         PageFactory.initElements(new DefaultSeleniumFieldDecorator(new DefaultSeleniumElementLocatorFactory(page)), page);
@@ -33,7 +34,7 @@ public final class SeleniumPageFactory {
         PageFactory.initElements(new DefaultSeleniumFieldDecorator(new DefaultSeleniumElementLocatorFactory()), page);
     }
 
-    private SeleniumPageFactory() {
+    private WebPageFactory() {
 
     }
 

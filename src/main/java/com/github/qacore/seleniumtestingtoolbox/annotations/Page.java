@@ -8,7 +8,7 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
+import com.github.qacore.seleniumtestingtoolbox.WebPageFactory;
 
 /**
  * Mark a field as a Page Object that should be automatically created by Selenium Testing Toolbox.
@@ -20,7 +20,7 @@ import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
- * @see SeleniumPageFactory
+ * @see WebPageFactory
  *
  * @since 1.0.0
  *

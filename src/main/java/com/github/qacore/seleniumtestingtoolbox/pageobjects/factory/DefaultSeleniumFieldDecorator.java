@@ -17,9 +17,9 @@ import org.openqa.selenium.support.pagefactory.ElementLocator;
 import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 
+import com.github.qacore.seleniumtestingtoolbox.WebPageFactory;
 import com.github.qacore.seleniumtestingtoolbox.annotations.PageComponent;
 import com.github.qacore.seleniumtestingtoolbox.annotations.PageRepository;
-import com.github.qacore.seleniumtestingtoolbox.pageobjects.SeleniumPageFactory;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.SeleniumLocatingElementHandler;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.SeleniumLocatingElementListHandler;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebElement;
@@ -27,7 +27,7 @@ import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebElement;
 import lombok.Data;
 
 /**
- * Default Selenium decorator for use with {@link SeleniumPageFactory} or {@link PageFactory}. Will decorate:
+ * Default Selenium decorator for use with {@link WebPageFactory} or {@link PageFactory}. Will decorate:
  * <ol>
  * <li>All of the {@link WebElement} fields</li>
  * <li>All of the {@link List}&lt;{@link WebElement}&gt; fields</li>
