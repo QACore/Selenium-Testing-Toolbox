@@ -52,6 +52,20 @@ public final class WebDriverManager {
     public static AugmentedWrapsDriver getDriverContext() {
         return driverContext;
     }
+    
+    public static void quit() {
+        WebDriver driver = webDriver.get();
+        
+        if (driver != null) {
+            try {
+                driver.quit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                webDriver.set(null);
+            }
+        }
+    }
 
     public static boolean isOpened() {
         WebDriver driver = webDriver.get();
