@@ -39,9 +39,9 @@ import org.openqa.selenium.logging.Logs;
 import org.openqa.selenium.mobile.NetworkConnection;
 import org.openqa.selenium.security.Credentials;
 
-import com.github.qacore.seleniumtestingtoolbox.html5.JSLocalStorage;
-import com.github.qacore.seleniumtestingtoolbox.html5.JSSessionStorage;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.events.EventsRegistry;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.html5.JSLocalStorage;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.html5.JSSessionStorage;
 
 import lombok.ToString;
 
