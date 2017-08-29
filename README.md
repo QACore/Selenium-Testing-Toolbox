@@ -84,6 +84,158 @@ public class GoogleTest extends SeleniumTest {
 
 ```
 
+### Page Objects
+
+To construct a Page, extend `AbstractPage` or `AbstractLoginPage`.
+
+You can define the URL of the page by overriding the `getUrl` method. Then, it’s possible to use the `load()` method to load the page, `isLoaded()` to check if the page is loaded and `isOpened()` to verify if the page is loaded.
+
+``` java
+
+package google;
+
+import static org.junit.Assert.assertTrue;
+
+import org.openqa.selenium.support.FindBy;
+
+import com.github.qacore.seleniumtestingtoolbox.annotations.Name;
+import com.github.qacore.seleniumtestingtoolbox.annotations.PageComponent;
+import com.github.qacore.seleniumtestingtoolbox.annotations.PageRepository;
+import com.github.qacore.seleniumtestingtoolbox.pageobjects.AbstractPage;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebElement;
+
+import google.components.Footer;
+
+public class GooglePage extends AbstractPage<GooglePage> {
+
+    @PageRepository
+    public UI      UI;
+
+    @PageComponent
+    private Footer footer;
+
+    public GooglePage fill(String q) {
+        UI.SEARCH_FIELD.sendKeys(q);
+
+        return this;
+    }
+
+    public GooglePage submit() {
+        UI.SEARCH_FIELD.submit();
+
+        return this;
+    }
+
+    public GooglePage search() {
+        UI.GOOGLE_SEARCH.click();
+
+        return this;
+    }
+
+    public GooglePage imFeelingLucky() {
+        UI.IM_FEELING_LUCKY.click();
+
+        return this;
+    }
+
+    public Footer footer() {
+        return footer;
+    }
+
+    @Override
+    public void isLoaded() throws Error {
+        assertTrue("The (Search field) is not displayed", UI.SEARCH_FIELD.isDisplayed());
+        assertTrue("The (Google search) is not displayed", UI.GOOGLE_SEARCH.isDisplayed());
+        assertTrue("The (I'm feeling lucky) search field is not displayed", UI.IM_FEELING_LUCKY.isDisplayed());
+    }
+
+    @Override
+    public String getUrl() {
+        return "https://www.google.com";
+    }
+
+    public static class UI {
+
+        @Name("Search field")      @FindBy(id = "lst-ib")
+        public AugmentedWebElement SEARCH_FIELD;
+
+        @Name("Google search")     @FindBy(name = "btnK")
+        public AugmentedWebElement GOOGLE_SEARCH;
+
+        @Name("I'm feeling lucky") @FindBy(name = "btnI")
+        public AugmentedWebElement IM_FEELING_LUCKY;
+
+    }
+
+}
+
+```
+
+``` java
+
+package google.components;
+
+import org.openqa.selenium.support.FindBy;
+
+import com.github.qacore.seleniumtestingtoolbox.annotations.Name;
+import com.github.qacore.seleniumtestingtoolbox.annotations.PageRepository;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebElement;
+
+public class Footer {
+
+    @PageRepository
+    public UI UI;
+
+    public void advertising() {
+        UI.ADVERTISING.click();
+    }
+
+    public void business() {
+        UI.BUSINESS.click();
+    }
+
+    public void about() {
+        UI.ABOUT.click();
+    }
+
+    public void privacy() {
+        UI.PRIVACY.click();
+    }
+
+    public void terms() {
+        UI.TERMS.click();
+    }
+
+    public void settings() {
+        UI.SETTINGS.click();
+    }
+
+    public static class UI {
+
+        @Name("Advertising") @FindBy(xpath = "(//span[@id='fsl']//a)[1]")
+        public AugmentedWebElement ADVERTISING;
+
+        @Name("Business")    @FindBy(xpath = "(//span[@id='fsl']//a)[2]")
+        public AugmentedWebElement BUSINESS;
+
+        @Name("About")       @FindBy(xpath = "(//span[@id='fsl']//a)[3]")
+        public AugmentedWebElement ABOUT;
+
+        @Name("Privacy")     @FindBy(xpath = "(//span[@id='fsr']//a)[1]")
+        public AugmentedWebElement PRIVACY;
+
+        @Name("Terms")       @FindBy(xpath = "(//span[@id='fsr']//a)[2]")
+        public AugmentedWebElement TERMS;
+
+        @Name("Settings")    @FindBy(xpath = "(//span[@id='fsr']//a)[3]")
+        public AugmentedWebElement SETTINGS;
+
+    }
+
+}
+
+```
+
 ## Authors
 
 * **[Leonardo Carmona da Silva]** - *Product Owner and Software Architect* - [LeoCarmona](https://github.com/LeoCarmona) on [LinkedIn](https://www.linkedin.com/in/l3ocarmona/)
