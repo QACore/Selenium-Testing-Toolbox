@@ -42,6 +42,48 @@ Selenium Testing Toolbox encourages the use of Page Object and Service Object pa
                    
 ```
 
+## Quickstart with Selenium Testing Toolbox
+
+### JUnit Test
+
+You can use the annotation `@Page` to construct your Page Objects easily.
+
+``` java
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import com.github.qacore.seleniumtestingtoolbox.WebDriverManager;
+import com.github.qacore.seleniumtestingtoolbox.adapter.junit.SeleniumTest;
+import com.github.qacore.seleniumtestingtoolbox.annotations.Page;
+
+public class GoogleTest extends SeleniumTest {
+
+    @Page
+    public GooglePage google;
+
+    @Before
+    public void setup() {
+        WebDriverManager.setDriver(new ChromeDriver());
+    }
+
+    @After
+    public void teardown() {
+        WebDriverManager.quit();
+    }
+
+    @Test
+    public void test() {
+        google.load()      // Load the page in the current WebDriver
+              .isLoaded(); // Throw an Error if the page is not loaded
+    }
+
+}
+
+```
+
 ## Authors
 
 * **[Leonardo Carmona da Silva]** - *Product Owner and Software Architect* - [LeoCarmona](https://github.com/LeoCarmona) on [LinkedIn](https://www.linkedin.com/in/l3ocarmona/)
