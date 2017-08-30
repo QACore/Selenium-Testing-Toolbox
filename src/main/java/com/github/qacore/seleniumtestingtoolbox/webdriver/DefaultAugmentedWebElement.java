@@ -99,8 +99,8 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
             this.openLink();
 
             Set<String> tabs = driver.getWindowHandles();
-
             tabs.removeAll(initialTabs);
+            
             driver.switchTo().window(tabs.iterator().next());
         }
     }

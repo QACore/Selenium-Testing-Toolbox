@@ -21,7 +21,7 @@ To keep up to date with the latest releases of Selenium Testing Toolbox, modify 
    <dependency>
       <groupId>com.github.qacore</groupId>
       <artifactId>selenium-testing-toolbox</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
    </dependency>
 </dependencies>
 ```
