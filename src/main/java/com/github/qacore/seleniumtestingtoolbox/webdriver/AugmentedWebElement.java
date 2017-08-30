@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -189,6 +190,11 @@ public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<
      * @return The {@link AugmentedWebElement WebElement} attributes.
      */
     Attributes attributes();
+
+    /**
+     * @return The {@link AugmentedWebElement WebElement} axes.
+     */
+    Axes axes();
 
     /**
      * @return The {@link WebDriver} name.
@@ -412,6 +418,94 @@ public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<
          * @return The size of this web element.
          */
         int size();
+
+    }
+
+    /**
+     * Handles XPath axes for an {@link WebElement}. (<a href='https://www.w3.org/TR/xpath/#axes'>https://www.w3.org/TR/xpath/#axes</a>)
+     * 
+     * @author Leonardo Carmona da Silva
+     *         <ul>
+     *         <li><a href="https://br.linkedin.com/in/l3ocarmona">https://br.linkedin.com/in/l3ocarmona</a></li>
+     *         <li><a href="https://github.com/leocarmona">https://github.com/leocarmona</a></li>
+     *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
+     *         </ul>
+     *
+     * @since 1.0.1
+     *
+     */
+    interface Axes {
+
+        /**
+         * Find parent {@link AugmentedWebElement WebElement}. Synonym for {@link WebElement#findElement(By) WebElement.findElement(By.xpath("parent::*"))}.
+         * 
+         * @return A {@link AugmentedWebElement WebElement}.
+         */
+        AugmentedWebElement parent();
+
+        /**
+         * Handle an XPath axe. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath(axe + "::" + node"))}.
+         * 
+         * @param axe
+         * 
+         * @param node
+         * 
+         * @return A {@link List} of {@link AugmentedWebElement WebElement}.
+         */
+        List<AugmentedWebElement> handleAxe(String axe, String node);
+
+        /**
+         * Handle an XPath axe. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("axe::*"))}.
+         * 
+         * @param axe
+         * 
+         * @return A {@link List} of {@link AugmentedWebElement WebElement}.
+         */
+        default List<AugmentedWebElement> handleAxe(String axe) {
+            return handleAxe(axe, "*");
+        }
+
+        /**
+         * Find ancestor {@link AugmentedWebElement WebElements}. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("ancestor::*"))}.
+         * 
+         * @return A {@link List} of {@link AugmentedWebElement WebElement}.
+         */
+        List<AugmentedWebElement> ancestors();
+
+        /**
+         * Find descendants {@link AugmentedWebElement WebElements} (children, grandchildren etc). Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("descendant::*"))}. 
+         * 
+         * @return A {@link List} of {@link AugmentedWebElement WebElement}.
+         */
+        List<AugmentedWebElement> descendants();
+
+        /**
+         * Find following {@link AugmentedWebElement WebElements}. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("following::*"))}.
+         * 
+         * @return A {@link List} of {@link AugmentedWebElement WebElement}.
+         */
+        List<AugmentedWebElement> followings();
+
+        /**
+         * Find following sibling {@link AugmentedWebElement WebElements}. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("following-sibling::*"))}.
+         * 
+         * @return A {@link List} of {@link AugmentedWebElement WebElement}.
+         */
+        List<AugmentedWebElement> followingSiblings();
+
+        /**
+         * Find preceding {@link AugmentedWebElement WebElements} (Ancestors are NOT included). Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("preceding::*"))}.
+         * 
+         * @return A {@link List} of {@link AugmentedWebElement WebElement}.
+         */
+        List<AugmentedWebElement> precedings();
+
+        /**
+         * Find preceding sibling {@link AugmentedWebElement WebElements}. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("preceding-sibling::*"))}.
+         * 
+         * @return A {@link List} of {@link AugmentedWebElement WebElement}.
+         */
+        List<AugmentedWebElement> precedingSiblings();
 
     }
 

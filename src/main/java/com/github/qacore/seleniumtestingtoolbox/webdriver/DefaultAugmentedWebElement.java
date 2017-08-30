@@ -32,6 +32,8 @@ import org.openqa.selenium.support.ui.Select;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.events.EventsControl;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.events.EventsRegistry;
 
+import lombok.ToString;
+
 /**
  * Augmented {@link WebElement}.
  * 
@@ -53,6 +55,9 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     private Actions        actions;
     private WebDriver      wrappedDriver;
 
+    private Attributes     attributes;
+    private Axes           axes;
+
     public DefaultAugmentedWebElement(WebElement wrappedElement, String name, EventsRegistry events) {
         this.wrappedElement = wrappedElement;
 
@@ -72,6 +77,9 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
             wrappedDriver = ((WrapsDriver) wrappedElement).getWrappedDriver();
             actions = new Actions(wrappedDriver);
         }
+
+        this.attributes = new DefaultAttributes();
+        this.axes = new DefaultAxes();
     }
 
     @Override
@@ -100,7 +108,7 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
 
             Set<String> tabs = driver.getWindowHandles();
             tabs.removeAll(initialTabs);
-            
+
             driver.switchTo().window(tabs.iterator().next());
         }
     }
@@ -109,7 +117,7 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     public void openLink() {
         this.getWrappedElement().click();
     }
-    
+
     @Override
     public boolean isMultiple() {
         return new Select(this).isMultiple();
@@ -128,7 +136,7 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     @Override
     public AugmentedWebElement getFirstSelectedOption() {
         WebElement element = new Select(this).getFirstSelectedOption();
-        
+
         return new DefaultAugmentedWebElement(element, element.getText(), this.events());
     }
 
@@ -439,7 +447,12 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
 
     @Override
     public Attributes attributes() {
-        return new Attributes();
+        return attributes;
+    }
+
+    @Override
+    public Axes axes() {
+        return axes;
     }
 
     @Override
@@ -480,7 +493,7 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
      * @since 1.0.1
      *
      */
-    protected class Attributes implements AugmentedWebElement.Attributes {
+    protected class DefaultAttributes implements AugmentedWebElement.Attributes {
 
         @Override
         public String id() {
@@ -698,6 +711,64 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
         @Override
         public String toString() {
             return "Attributes(" + DefaultAugmentedWebElement.this.toString() + ")";
+        }
+
+    }
+
+    /**
+     * Handles XPath axes for an {@link WebElement}. (<a href='https://www.w3.org/TR/xpath/#axes'>https://www.w3.org/TR/xpath/#axes</a>)
+     * 
+     * @author Leonardo Carmona da Silva
+     *         <ul>
+     *         <li><a href="https://br.linkedin.com/in/l3ocarmona">https://br.linkedin.com/in/l3ocarmona</a></li>
+     *         <li><a href="https://github.com/leocarmona">https://github.com/leocarmona</a></li>
+     *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
+     *         </ul>
+     *
+     * @since 1.0.1
+     *
+     */
+    @ToString
+    protected class DefaultAxes implements AugmentedWebElement.Axes {
+
+        @Override
+        public AugmentedWebElement parent() {
+            return findElement(By.xpath("parent::*"), null);
+        }
+
+        @Override
+        public List<AugmentedWebElement> handleAxe(String axe, String node) {
+            return findElements(By.xpath(axe + "::" + node), null);
+        }
+
+        @Override
+        public List<AugmentedWebElement> ancestors() {
+            return this.handleAxe("ancestor");
+        }
+
+        @Override
+        public List<AugmentedWebElement> descendants() {
+            return this.handleAxe("descendant");
+        }
+
+        @Override
+        public List<AugmentedWebElement> followings() {
+            return this.handleAxe("following");
+        }
+
+        @Override
+        public List<AugmentedWebElement> followingSiblings() {
+            return this.handleAxe("following-sibling");
+        }
+
+        @Override
+        public List<AugmentedWebElement> precedings() {
+            return this.handleAxe("preceding");
+        }
+
+        @Override
+        public List<AugmentedWebElement> precedingSiblings() {
+            return this.handleAxe("preceding-sibling");
         }
 
     }
