@@ -32,7 +32,7 @@ import lombok.Data;
  * <li>All of the {@link WebElement} fields</li>
  * <li>All of the {@link List}&lt;{@link WebElement}&gt; fields</li>
  * </ol>
- * The fields one and two fields that have {@literal @FindBy}, {@literal @FindBys}, or {@literal @FindAll} annotation with a proxy that locates the elements using the passed in {@link ParallelElementLocatorFactory}.
+ * The fields one and two fields that have {@literal @FindBy}, {@literal @FindBys}, or {@literal @FindAll} annotation with a proxy that locates the elements using the passed in {@link ElementLocatorFactory}.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
