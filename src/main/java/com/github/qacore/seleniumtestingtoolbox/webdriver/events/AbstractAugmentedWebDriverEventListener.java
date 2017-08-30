@@ -12,6 +12,8 @@ import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
+ * @since 1.0.0
+ *
  */
 public abstract class AbstractAugmentedWebDriverEventListener extends AbstractWebDriverEventListener implements AugmentedWebDriverEventListener {
 
