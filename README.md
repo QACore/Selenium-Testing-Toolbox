@@ -2,6 +2,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.qacore/selenium-testing-toolbox.svg)](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.github.qacore%22%20AND%20a%3A%22selenium-testing-toolbox%22) 
 [![Build Status](https://travis-ci.org/QACore/Selenium-Testing-Toolbox.svg?branch=master)](https://travis-ci.org/QACore/Selenium-Testing-Toolbox)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ca59e715d878444daaaa6383af6088a4)](https://www.codacy.com/app/LeoCarmona/Selenium-Testing-Toolbox?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=QACore/Selenium-Testing-Toolbox&amp;utm_campaign=Badge_Grade)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/QACore/Selenium-Testing-Toolbox/blob/master/LICENSE.txt)
 
 This is a framework for writing maintainable [Selenium](https://github.com/SeleniumHQ/selenium) tests that also makes integrating much easier.
