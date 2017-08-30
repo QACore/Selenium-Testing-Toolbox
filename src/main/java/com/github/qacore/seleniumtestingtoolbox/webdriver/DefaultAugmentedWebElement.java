@@ -550,7 +550,7 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
             try {
                 return new URL(formAction);
             } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
+                throw new WebDriverException(e);
             }
         }
 
