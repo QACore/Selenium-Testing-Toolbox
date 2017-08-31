@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit;
  * @since 1.0.1
  *
  */
-
 @Target(FIELD)
 @Retention(RUNTIME)
 public @interface AjaxElement {
