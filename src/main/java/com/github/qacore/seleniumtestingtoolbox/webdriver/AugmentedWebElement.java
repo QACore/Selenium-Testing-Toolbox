@@ -24,7 +24,8 @@ import org.openqa.selenium.internal.WrapsElement;
  * @since 1.0.0
  *
  */
-public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<AugmentedWebElement>, AugmentedSelect<AugmentedWebElement>, Locatable, WrapsElement {
+public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<AugmentedWebElement>, AugmentedSelect<AugmentedWebElement>, 
+                                             Locatable, WrapsElement {
 
     /**
      * Is the element currently loaded or not?
