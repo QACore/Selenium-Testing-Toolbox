@@ -211,11 +211,12 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     @Override
     public File downloadImage(String pathname, int connectionTimeout, int readTimeout) {
         File file = new File(pathname);
+        String url = this.getAttribute("src");
 
         try {
-            FileUtils.copyURLToFile(new URL(this.getAttribute("src")), file, connectionTimeout, readTimeout);
+            FileUtils.copyURLToFile(new URL(url), file, connectionTimeout, readTimeout);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverException("An error ocurred whele downloading an image with url '" + url + "'", e);
         }
 
         return file;
@@ -224,11 +225,12 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     @Override
     public File downloadImage(String pathname) {
         File file = new File(pathname);
+        String url = this.getAttribute("src");
 
         try {
-            FileUtils.copyURLToFile(new URL(this.getAttribute("src")), file);
+            FileUtils.copyURLToFile(new URL(url), file);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new WebDriverException("An error ocurred whele downloading an image with url '" + url + "'", e);
         }
 
         return file;

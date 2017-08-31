@@ -8,6 +8,7 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -92,9 +93,9 @@ public class DefaultSeleniumFieldDecorator implements FieldDecorator {
 
                 object = constructor.newInstance();
             } catch (NoSuchMethodException e) {
-                throw new RuntimeException("@" + annotation.getSimpleName() + " field must have an empty constructor.", e);
+                throw new WebDriverException("@" + annotation.getSimpleName() + " field must have an empty constructor.", e);
             } catch (Exception e) {
-                throw new RuntimeException("An error ocurred while calling new() instance of @" + annotation.getSimpleName() + ".", e);
+                throw new WebDriverException("An error ocurred while calling new() instance of @" + annotation.getSimpleName() + ".", e);
             }
 
             this.proxyFields(this, object, field.getType());
