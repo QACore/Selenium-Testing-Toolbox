@@ -455,7 +455,7 @@ public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<
         List<AugmentedWebElement> handleAxe(String axe, String node);
 
         /**
-         * Handle an XPath axe. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("axe::*"))}.
+         * Handle an XPath axe. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath(axe + "::*"))}.
          * 
          * @param axe
          * 
