@@ -473,7 +473,7 @@ public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<
         List<AugmentedWebElement> ancestors();
 
         /**
-         * Find descendants {@link AugmentedWebElement WebElements} (children, grandchildren etc). Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("descendant::*"))}. 
+         * Find descendants {@link AugmentedWebElement WebElements} (children, grandchildren etc). Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath("descendant::*"))}.
          * 
          * @return A {@link List} of {@link AugmentedWebElement WebElement}.
          */

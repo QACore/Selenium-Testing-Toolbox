@@ -1,9 +1,13 @@
 package com.github.qacore.seleniumtestingtoolbox;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebDriver;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.AugmentedWebElement;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.DefaultAugmentedWebDriver;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.DefaultAugmentedWebElement;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.events.EventsRegistry;
 
 /**
  * {@link WebDriver} factory.
@@ -34,6 +38,28 @@ public final class WebDriverFactory {
         }
 
         return new DefaultAugmentedWebDriver(driver);
+    }
+
+    /**
+     * Augment an {@link WebElement}.
+     * 
+     * @param element
+     *            The {@link WebElement}.
+     * 
+     * @param name
+     *            The {@link WebElement} name. Can be null.
+     * 
+     * @param eventsRegistry
+     *            The {@link EventsRegistry}. Can be null.
+     * 
+     * @return An augmented {@link WebElement}.
+     */
+    public static AugmentedWebElement augment(WebElement element, String name, EventsRegistry eventsRegistry) {
+        if (element instanceof AugmentedWebElement) {
+            return (AugmentedWebElement) element;
+        }
+
+        return new DefaultAugmentedWebElement(element, name, eventsRegistry);
     }
 
     private WebDriverFactory() {

@@ -3,6 +3,7 @@ package com.github.qacore.seleniumtestingtoolbox.webdriver;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 
@@ -17,15 +18,47 @@ import org.openqa.selenium.WebElement;
  *         </ul>
  *
  * @param <T>
- *            Element type.
+ *            The {@link WebElement} type.
  *
  * @since 1.0.0
  *
  */
 public interface AugmentedSearchContext<T extends WebElement> {
 
+    /**
+     * Find all elements within the current context using the given mechanism.
+     *
+     * @param <W>
+     *            The sub {@link WebElement} type.
+     *
+     * @param by
+     *            The locating mechanism to use.
+     * 
+     * @param name
+     *            The name of the elements.
+     * 
+     * @return A list of all {@link WebElement WebElements}, or an empty list if nothing matches.
+     * 
+     * @see By
+     */
     List<T> findElements(By by, String name);
 
+    /**
+     * Find the first {@link WebElement} using the given method.
+     *
+     * @param by
+     *            The locating mechanism.
+     * 
+     * @param name
+     *            The name of the element.
+     * 
+     * @return The first matching element on the current context.
+     * 
+     * @throws NoSuchElementException
+     *             If no matching elements are found.
+     * 
+     * @see By
+     */
     T findElement(By by, String name);
 
 }
