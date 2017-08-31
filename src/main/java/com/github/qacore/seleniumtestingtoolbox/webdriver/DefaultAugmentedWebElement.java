@@ -311,7 +311,7 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     public List<AugmentedWebElement> findElements(By by, String name) {
         this.events().dispatch(e -> e.beforeFindBy(by, this, this.getWrappedDriver()));
 
-        List<AugmentedWebElement> elements = SearchContextHolder.findElements(this.getWrappedDriver(), by, name, this.events());
+        List<AugmentedWebElement> elements = SearchContextHolder.findElements(this.getWrappedElement(), by, name, this.events());
 
         this.events().dispatch(e -> e.afterFindBy(by, this, this.getWrappedDriver()));
 
