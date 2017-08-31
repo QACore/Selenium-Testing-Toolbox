@@ -27,11 +27,11 @@ import org.openqa.selenium.internal.WrapsElement;
 public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<AugmentedWebElement>, AugmentedSelect<AugmentedWebElement>, Locatable, WrapsElement {
 
     /**
-     * Is the element currently present or not?
+     * Is the element currently loaded or not?
      * 
-     * @return True if the element is present, false otherwise.
+     * @return True if the element is loaded, false otherwise.
      */
-    boolean isPresent();
+    boolean isLoaded();
 
     /**
      * Is the element currently clicable or not?

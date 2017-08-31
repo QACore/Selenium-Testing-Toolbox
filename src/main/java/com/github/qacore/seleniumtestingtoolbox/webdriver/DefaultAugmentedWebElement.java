@@ -83,7 +83,7 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     }
 
     @Override
-    public boolean isPresent() {
+    public boolean isLoaded() {
         try {
             this.getWrappedElement().isEnabled();
 
