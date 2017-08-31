@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -312,22 +311,11 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     public List<AugmentedWebElement> findElements(By by, String name) {
         this.events().dispatch(e -> e.beforeFindBy(by, this, this.getWrappedDriver()));
 
-        List<WebElement> elements = this.getWrappedElement().findElements(by);
-        AugmentedWebElement[] augmentedElements = new AugmentedWebElement[elements.size()];
-
-        if (name == null) {
-            for (int i = 0; i < augmentedElements.length; i++) {
-                augmentedElements[i] = new DefaultAugmentedWebElement(elements.get(i), null, this.events());
-            }
-        } else {
-            for (int i = 0; i < augmentedElements.length; i++) {
-                augmentedElements[i] = new DefaultAugmentedWebElement(elements.get(i), name + " [" + i + "]", this.events());
-            }
-        }
+        List<AugmentedWebElement> elements = SearchContextHolder.findElements(this.getWrappedDriver(), by, name, this.events());
 
         this.events().dispatch(e -> e.afterFindBy(by, this, this.getWrappedDriver()));
 
-        return Arrays.asList(augmentedElements);
+        return elements;
     }
 
     @Override
