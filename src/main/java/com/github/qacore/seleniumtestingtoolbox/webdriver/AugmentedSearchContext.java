@@ -28,9 +28,6 @@ public interface AugmentedSearchContext<T extends WebElement> {
     /**
      * Find all elements within the current context using the given mechanism.
      *
-     * @param <W>
-     *            The sub {@link WebElement} type.
-     *
      * @param by
      *            The locating mechanism to use.
      * 

@@ -24,8 +24,7 @@ import org.openqa.selenium.internal.WrapsElement;
  * @since 1.0.0
  *
  */
-public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<AugmentedWebElement>, AugmentedSelect<AugmentedWebElement>, 
-                                             Locatable, WrapsElement {
+public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<AugmentedWebElement>, AugmentedSelect<AugmentedWebElement>, Locatable, WrapsElement {
 
     /**
      * Is the element currently loaded or not?
@@ -448,8 +447,10 @@ public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<
          * Handle an XPath axe. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath(axe + "::" + node"))}.
          * 
          * @param axe
+         *            Axe to handle.
          * 
          * @param node
+         *            Node to handle.
          * 
          * @return A {@link List} of {@link AugmentedWebElement WebElement}.
          */
@@ -459,6 +460,7 @@ public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<
          * Handle an XPath axe. Synonym for {@link WebElement#findElements(By) WebElement.findElements(By.xpath(axe + "::*"))}.
          * 
          * @param axe
+         *            Axe to handle.
          * 
          * @return A {@link List} of {@link AugmentedWebElement WebElement}.
          */
