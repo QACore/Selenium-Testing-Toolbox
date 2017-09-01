@@ -1,15 +1,11 @@
 package com.github.qacore.seleniumtestingtoolbox.adapter.junit;
 
-import java.lang.reflect.Field;
-
 import org.junit.Rule;
 import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
-import org.openqa.selenium.WebDriverException;
 
 import com.github.qacore.seleniumtestingtoolbox.WebPageFactory;
-import com.github.qacore.seleniumtestingtoolbox.annotations.Page;
 
 /**
  * JUnit 4 Selenium Test Runner Adapter.
@@ -32,23 +28,6 @@ public class SeleniumTest {
         @Override
         public void starting(Description description) {
             WebPageFactory.initElements(SeleniumTest.this);
-
-            Class<?> currentClass = SeleniumTest.this.getClass();
-
-            while (currentClass != Object.class) {
-                for (Field field : currentClass.getDeclaredFields()) {
-                    if (field.isAnnotationPresent(Page.class)) {
-                        try {
-                            field.setAccessible(true);
-                            field.set(SeleniumTest.this, field.getType().newInstance());
-                        } catch (Exception e) {
-                            throw new WebDriverException("An error ocurred when trying to decorate '" + field.getDeclaringClass().getName() + "." + field.getName() + "'.", e);
-                        }
-                    }
-                }
-
-                currentClass = currentClass.getSuperclass();
-            }
         }
 
     };

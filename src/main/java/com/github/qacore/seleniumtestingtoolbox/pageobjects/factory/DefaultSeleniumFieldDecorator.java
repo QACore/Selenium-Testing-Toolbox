@@ -6,7 +6,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -19,6 +21,7 @@ import org.openqa.selenium.support.pagefactory.ElementLocatorFactory;
 import org.openqa.selenium.support.pagefactory.FieldDecorator;
 
 import com.github.qacore.seleniumtestingtoolbox.WebPageFactory;
+import com.github.qacore.seleniumtestingtoolbox.annotations.Page;
 import com.github.qacore.seleniumtestingtoolbox.annotations.PageComponent;
 import com.github.qacore.seleniumtestingtoolbox.annotations.PageRepository;
 import com.github.qacore.seleniumtestingtoolbox.pageobjects.factory.internal.SeleniumLocatingElementHandler;
@@ -51,9 +54,11 @@ import lombok.Data;
 public class DefaultSeleniumFieldDecorator implements FieldDecorator {
 
     private ElementLocatorFactory elementLocatorFactory;
+    private Map<Object, Object>   cache;
 
     public DefaultSeleniumFieldDecorator(ElementLocatorFactory elementLocatorFactory) {
         this.elementLocatorFactory = elementLocatorFactory;
+        this.cache = new HashMap<>();
     }
 
     @Override
@@ -80,14 +85,26 @@ public class DefaultSeleniumFieldDecorator implements FieldDecorator {
             return object;
         }
 
-        return this.initDefaultPageBean(PageComponent.class, field, this);
+        object = this.initDefaultPageBean(PageComponent.class, field, this);
+
+        if (object != null) {
+            return object;
+        }
+
+        return this.initDefaultPageBean(Page.class, field, this);
     }
 
     protected Object initDefaultPageBean(Class<? extends Annotation> annotation, Field field, FieldDecorator decorator) {
-        Object object = null;
+        if (!field.isAnnotationPresent(annotation)) {
+            return null;
+        }
 
-        if (field.isAnnotationPresent(annotation)) {
+        Object object = this.getCache().get(field.getType());
+
+        if (object == null) {
             try {
+                field.setAccessible(true);
+
                 Constructor<?> constructor = field.getType().getConstructor();
                 constructor.setAccessible(true);
 
@@ -98,6 +115,7 @@ public class DefaultSeleniumFieldDecorator implements FieldDecorator {
                 throw new WebDriverException("An error ocurred while calling new() instance of @" + annotation.getSimpleName() + ".", e);
             }
 
+            this.getCache().put(field.getType(), object);
             this.proxyFields(this, object, field.getType());
         }
 
