@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.pagefactory.Annotations;
 
+import com.github.qacore.seleniumtestingtoolbox.annotations.AjaxElement;
 import com.github.qacore.seleniumtestingtoolbox.annotations.Name;
 
 import lombok.Getter;
@@ -18,6 +19,7 @@ import lombok.Getter;
  * <li>@{@link FindBys}</li>
  * <li>@{@link FindAll}</li>
  * <li>@{@link Name}</li>
+ * <li>@{@link AjaxElement}</li>
  * </ul>
  * 
  * @author Leonardo Carmona da Silva
@@ -33,10 +35,13 @@ import lombok.Getter;
 public class AugmentedElementAnnotations extends Annotations {
 
     @Getter
-    private String name;
+    private String      name;
 
     @Getter
-    private String description;
+    private String      description;
+
+    @Getter
+    private AjaxElement ajaxElement;
 
     public AugmentedElementAnnotations(Field field) {
         super(field);
@@ -47,6 +52,8 @@ public class AugmentedElementAnnotations extends Annotations {
             this.name = name.value();
             this.description = name.description();
         }
+        
+        this.ajaxElement = field.getAnnotation(AjaxElement.class);
     }
 
 }

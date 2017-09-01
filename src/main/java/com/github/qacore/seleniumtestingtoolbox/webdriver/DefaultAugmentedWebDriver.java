@@ -1,9 +1,11 @@
 package com.github.qacore.seleniumtestingtoolbox.webdriver;
 
+import static lombok.AccessLevel.PROTECTED;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -43,6 +45,8 @@ import com.github.qacore.seleniumtestingtoolbox.webdriver.events.EventsRegistry;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.html5.JSLocalStorage;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.html5.JSSessionStorage;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -62,21 +66,25 @@ import lombok.ToString;
 public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
 
     private final EventsRegistry eventsRegistry = new EventsRegistry();
-    private final WrapsDriver    driverContext;
 
-    public DefaultAugmentedWebDriver(WrapsDriver driverContext) {
-        this.driverContext = driverContext;
-    }
+    @Getter
+    @Setter(PROTECTED)
+    private WebDriver            wrappedDriver;
+
+    @Getter(PROTECTED)
+    @Setter(PROTECTED)
+    private TargetLocator        targetLocator;
+
+    @Getter(PROTECTED)
+    @Setter(PROTECTED)
+    private Navigation           navigation;
+
+    @Getter(PROTECTED)
+    @Setter(PROTECTED)
+    private Options              options;
 
     public DefaultAugmentedWebDriver(WebDriver webDriver) {
-        this.driverContext = new WrapsDriver() {
-
-            @Override
-            public WebDriver getWrappedDriver() {
-                return webDriver;
-            }
-
-        };
+        this.wrappedDriver = webDriver;
     }
 
     @Override
@@ -127,22 +135,11 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
     public List<AugmentedWebElement> findElements(By by, String name) {
         this.events().dispatch(e -> e.beforeFindBy(by, null, this.getWrappedDriver()));
 
-        List<WebElement> elements = this.getWrappedDriver().findElements(by);
-        AugmentedWebElement[] augmentedElements = new AugmentedWebElement[elements.size()];
-
-        if (name == null) {
-            for (int i = 0; i < augmentedElements.length; i++) {
-                augmentedElements[i] = new DefaultAugmentedWebElement(elements.get(i), null, this.events());
-            }
-        } else {
-            for (int i = 0; i < augmentedElements.length; i++) {
-                augmentedElements[i] = new DefaultAugmentedWebElement(elements.get(i), name + " [" + i + "]", this.events());
-            }
-        }
+        List<AugmentedWebElement> elements = SearchContextHolder.findElements(this.getWrappedDriver(), by, name, this.events());
 
         this.events().dispatch(e -> e.afterFindBy(by, null, this.getWrappedDriver()));
 
-        return Arrays.asList(augmentedElements);
+        return elements;
     }
 
     @Override
@@ -194,17 +191,17 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
 
     @Override
     public TargetLocator switchTo() {
-        return new DefaultTargetLocator();
+        return this.getTargetLocator();
     }
 
     @Override
     public Navigation navigate() {
-        return new DefaultNavigation();
+        return this.getNavigation();
     }
 
     @Override
     public Options manage() {
-        return new DefaultOptions();
+        return this.getOptions();
     }
 
     @Override
@@ -362,7 +359,7 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
 
         return new JSSessionStorage((WrapsDriver) this);
     }
-    
+
     @Override
     public ConnectionType getNetworkConnection() {
         WebDriver driver = this.getWrappedDriver();
@@ -370,10 +367,10 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
         if (driver instanceof NetworkConnection) {
             return ((NetworkConnection) driver).getNetworkConnection();
         }
-        
+
         throw new UnsupportedOperationException("Wrapped driver does not implements NetworkConnection yet");
     }
-    
+
     @Override
     public ConnectionType setNetworkConnection(ConnectionType type) {
         WebDriver driver = this.getWrappedDriver();
@@ -381,10 +378,10 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
         if (driver instanceof NetworkConnection) {
             return ((NetworkConnection) driver).setNetworkConnection(type);
         }
-        
+
         throw new UnsupportedOperationException("Wrapped driver does not implements NetworkConnection yet");
     }
-    
+
     @Override
     public Location location() {
         WebDriver driver = this.getWrappedDriver();
@@ -392,10 +389,10 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
         if (driver instanceof LocationContext) {
             return ((LocationContext) driver).location();
         }
-        
+
         throw new UnsupportedOperationException("Wrapped driver does not implements LocationContext yet");
     }
-    
+
     @Override
     public void setLocation(Location location) {
         WebDriver driver = this.getWrappedDriver();
@@ -405,11 +402,6 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
         } else {
             throw new UnsupportedOperationException("Wrapped driver does not implements LocationContext yet");
         }
-    }
-
-    @Override
-    public WebDriver getWrappedDriver() {
-        return this.driverContext.getWrappedDriver();
     }
 
     /**
@@ -425,7 +417,12 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
      * @since 1.0.0
      *
      */
+    @ToString
     protected class DefaultTargetLocator implements AugmentedWebDriver.TargetLocator {
+
+        @Getter(PROTECTED)
+        @Setter(PROTECTED)
+        private AugmentedAlert alert = new DefaultAlert();
 
         @Override
         public WebElement activeElement() {
@@ -434,7 +431,7 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
 
         @Override
         public AugmentedAlert alert() {
-            return new DefaultAlert();
+            return this.getAlert();
         }
 
         @Override
@@ -470,6 +467,51 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
             getWrappedDriver().switchTo().window(nameOrHandle);
 
             return DefaultAugmentedWebDriver.this;
+        }
+
+        @Override
+        public AugmentedWebDriver window(int index) {
+            WebDriver webDriver = getWrappedDriver();
+            Set<String> windowHandles = webDriver.getWindowHandles();
+
+            if (windowHandles.size() > index) {
+                throw new WebDriverException("Invalid tab index '" + index + "'. Current tab count '" + windowHandles.size() + "'.");
+            }
+
+            webDriver.switchTo().window(new ArrayList<>(windowHandles).get(index));
+
+            return DefaultAugmentedWebDriver.this;
+        }
+
+        @Override
+        public String openNewAndSwitch() {
+            String windowHandle = getWrappedDriver().getWindowHandle();
+            
+            executeScript("window.open('', '_blank')");
+            last();
+
+            return windowHandle;
+        }
+
+        @Override
+        public String first() {
+            WebDriver webDriver = getWrappedDriver();
+            String windowHandle = webDriver.getWindowHandle();
+
+            webDriver.switchTo().window(new ArrayList<>(webDriver.getWindowHandles()).get(0));
+
+            return windowHandle;
+        }
+
+        @Override
+        public String last() {
+            WebDriver webDriver = getWrappedDriver();
+            String windowHandle = webDriver.getWindowHandle();
+            List<String> listWindows = new ArrayList<>(webDriver.getWindowHandles());
+
+            webDriver.switchTo().window(listWindows.get(listWindows.size() - 1));
+
+            return windowHandle;
         }
 
         @Override
@@ -553,7 +595,20 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
      * @since 1.0.0
      *
      */
+    @ToString
     protected class DefaultOptions implements AugmentedWebDriver.Options {
+
+        @Getter(PROTECTED)
+        @Setter(PROTECTED)
+        private Timeouts   timeouts   = new DefaultTimeouts();
+
+        @Getter(PROTECTED)
+        @Setter(PROTECTED)
+        private ImeHandler imeHandler = new DefaultImeHandler();
+
+        @Getter(PROTECTED)
+        @Setter(PROTECTED)
+        private Window     window     = new DefaultWindow();
 
         @Override
         public void addCookie(Cookie cookie) {
@@ -592,17 +647,17 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
 
         @Override
         public Timeouts timeouts() {
-            return new DefaultTimeouts();
+            return this.getTimeouts();
         }
 
         @Override
         public ImeHandler ime() {
-            return new DefaultImeHandler();
+            return this.getImeHandler();
         }
 
         @Override
         public Window window() {
-            return new DefaultWindow();
+            return this.getWindow();
         }
 
         /**
@@ -621,25 +676,55 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
         @ToString
         protected class DefaultTimeouts implements AugmentedWebDriver.Timeouts {
 
+            @Getter
+            private Duration implicityWait;
+
+            @Getter
+            private Duration scriptTimeout;
+
+            @Getter
+            private Duration pageLoadTimeout;
+
+            @Override
+            public Timeouts implicitlyWait(Duration duration) {
+                getWrappedDriver().manage().timeouts().implicitlyWait(duration.getTime(), duration.getUnit());
+
+                this.implicityWait = duration;
+
+                return this;
+            }
+
             @Override
             public Timeouts implicitlyWait(long time, TimeUnit unit) {
-                getWrappedDriver().manage().timeouts().implicitlyWait(time, unit);
+                return this.implicitlyWait(new Duration(time, unit));
+            }
+
+            @Override
+            public Timeouts setScriptTimeout(Duration duration) {
+                getWrappedDriver().manage().timeouts().setScriptTimeout(duration.getTime(), duration.getUnit());
+
+                this.scriptTimeout = duration;
 
                 return this;
             }
 
             @Override
             public Timeouts setScriptTimeout(long time, TimeUnit unit) {
-                getWrappedDriver().manage().timeouts().setScriptTimeout(time, unit);
+                return this.setScriptTimeout(new Duration(time, unit));
+            }
+
+            @Override
+            public Timeouts pageLoadTimeout(Duration duration) {
+                getWrappedDriver().manage().timeouts().pageLoadTimeout(duration.getTime(), duration.getUnit());
+
+                this.pageLoadTimeout = duration;
 
                 return this;
             }
 
             @Override
             public Timeouts pageLoadTimeout(long time, TimeUnit unit) {
-                getWrappedDriver().manage().timeouts().pageLoadTimeout(time, unit);
-
-                return this;
+                return this.pageLoadTimeout(new Duration(time, unit));
             }
 
         }

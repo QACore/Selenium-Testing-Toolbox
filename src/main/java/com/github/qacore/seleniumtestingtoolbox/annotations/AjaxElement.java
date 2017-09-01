@@ -1,15 +1,14 @@
 package com.github.qacore.seleniumtestingtoolbox.annotations;
 
 import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.concurrent.TimeUnit;
 
 /**
- * This annotation is used to describe a component.
+ * Identifies an Ajax Element.
  * 
  * @author Leonardo Carmona da Silva
  *         <ul>
@@ -18,26 +17,25 @@ import java.lang.annotation.Target;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  *
- * @since 1.0.0
+ * @since 1.0.1
  *
  */
-@Target({ TYPE, FIELD })
+@Target(FIELD)
 @Retention(RUNTIME)
-@Documented
-public @interface Name {
+public @interface AjaxElement {
 
     /**
-     * The name of the component
+     * The timeout for the element.
      * 
-     * @return the value
+     * @return The timeout duration.
      */
-    String value();
+    long value() default 5L;
 
     /**
-     * The description of the component
+     * The timeout unit for the element.
      * 
-     * @return the description
+     * @return The unit of time.
      */
-    String description() default "";
+    TimeUnit unit() default TimeUnit.SECONDS;
 
 }
