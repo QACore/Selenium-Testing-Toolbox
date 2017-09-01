@@ -484,6 +484,37 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
         }
 
         @Override
+        public String openNewAndSwitch() {
+            String windowHandle = getWrappedDriver().getWindowHandle();
+            
+            executeScript("window.open('', '_blank')");
+            last();
+
+            return windowHandle;
+        }
+
+        @Override
+        public String first() {
+            WebDriver webDriver = getWrappedDriver();
+            String windowHandle = webDriver.getWindowHandle();
+
+            webDriver.switchTo().window(new ArrayList<>(webDriver.getWindowHandles()).get(0));
+
+            return windowHandle;
+        }
+
+        @Override
+        public String last() {
+            WebDriver webDriver = getWrappedDriver();
+            String windowHandle = webDriver.getWindowHandle();
+            List<String> listWindows = new ArrayList<>(webDriver.getWindowHandles());
+
+            webDriver.switchTo().window(listWindows.get(listWindows.size() - 1));
+
+            return windowHandle;
+        }
+
+        @Override
         public AugmentedWebDriver defaultContent() {
             getWrappedDriver().switchTo().defaultContent();
 
@@ -674,7 +705,7 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
 
                 this.scriptTimeout = duration;
 
-                return null;
+                return this;
             }
 
             @Override
@@ -688,7 +719,7 @@ public class DefaultAugmentedWebDriver implements AugmentedWebDriver {
 
                 this.pageLoadTimeout = duration;
 
-                return null;
+                return this;
             }
 
             @Override

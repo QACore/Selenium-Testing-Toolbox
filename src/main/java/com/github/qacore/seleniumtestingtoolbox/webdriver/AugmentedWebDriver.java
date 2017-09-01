@@ -258,6 +258,27 @@ public interface AugmentedWebDriver extends WebDriver, AugmentedSearchContext<Au
          * @return This driver focused on the given window.
          */
         AugmentedWebDriver window(int index);
+        
+        /**
+         * Opens a new window.
+         * 
+         * @return Handle of old (parent) window.
+         */
+        String openNewAndSwitch();
+
+        /**
+         * Switches to the first opened window.
+         * 
+         * @return Handle of old (parent) window.
+         */
+        String first();
+        
+        /**
+         * Switches to the last opened window.
+         * 
+         * @return Handle of old (parent) window.
+         */
+        String last();
 
         @Override
         AugmentedWebDriver defaultContent();
