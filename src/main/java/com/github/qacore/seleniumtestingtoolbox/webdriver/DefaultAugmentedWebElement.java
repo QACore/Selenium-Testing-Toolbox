@@ -263,6 +263,12 @@ public class DefaultAugmentedWebElement implements AugmentedWebElement, WrapsDri
     public void submit() {
         this.getWrappedElement().click();
     }
+    
+    @Override
+    public void setValue(CharSequence... keysToSend) {
+        this.clear();
+        this.sendKeys(keysToSend);
+    }
 
     @Override
     public void sendKeys(CharSequence... keysToSend) {

@@ -24,7 +24,8 @@ import org.openqa.selenium.internal.WrapsElement;
  * @since 1.0.0
  *
  */
-public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<AugmentedWebElement>, AugmentedSelect<AugmentedWebElement>, Locatable, WrapsElement {
+public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<AugmentedWebElement>, AugmentedSelect<AugmentedWebElement>, 
+                                             Locatable, WrapsElement {
 
     /**
      * Is the element currently loaded or not?
@@ -64,6 +65,24 @@ public interface AugmentedWebElement extends WebElement, AugmentedSearchContext<
      * Indeterminates this checkbox if not indeterminated already.
      */
     void indeterminate();
+        
+    /**
+     * Use this method to simulate typing into an element, which may set its value.
+     * <p>
+     * Synonym for:
+     * </p>
+     * <ol>
+     * <li>{@link WebElement#clear()}</li>
+     * <li>{@link WebElement#sendKeys(CharSequence...)}</li>
+     * </ol>
+     * 
+     * @param keysToSend
+     *            Character sequence to send to the element
+     *
+     * @throws IllegalArgumentException
+     *             if keysToSend is null
+     */
+    void setValue(CharSequence... keysToSend);
 
     /**
      * Download the image to specified path.
