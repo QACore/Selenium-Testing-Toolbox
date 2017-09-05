@@ -1,5 +1,6 @@
 package com.github.qacore.seleniumtestingtoolbox;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -19,10 +20,13 @@ import com.github.qacore.seleniumtestingtoolbox.webdriver.events.EventsRegistry;
  *         <li><a href="mailto:lcdesenv@gmail.com">lcdesenv@gmail.com</a></li>
  *         </ul>
  * 
+ * @param <T>
+ *            {@link WebDriver} type.
+ * 
  * @since 1.0.0
  *
  */
-public final class WebDriverFactory {
+public interface WebDriverFactory<T extends WebDriver> {
 
     /**
      * Augment an {@link WebDriver}.
@@ -62,8 +66,14 @@ public final class WebDriverFactory {
         return new DefaultAugmentedWebElement(element, name, eventsRegistry);
     }
 
-    private WebDriverFactory() {
-
-    }
+    /**
+     * Creates a new instance of {@link WebDriver}.
+     * 
+     * @param capabilities
+     *            Desired capabilities for the {@link WebDriver}.
+     * 
+     * @return New instance of {@link WebDriver}.
+     */
+    T newWebDriver(Capabilities capabilities);
 
 }
