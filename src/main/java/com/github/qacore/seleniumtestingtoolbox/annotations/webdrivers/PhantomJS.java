@@ -4,11 +4,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
+import java.util.function.Supplier;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverFactory;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.DefaultPhantomJSDriverFactory;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.capabilities.DefaultPhantomJSCapabilities;
 
 /**
  * This annotation indicates to use the {@link PhantomJSDriver}.
@@ -36,4 +39,11 @@ public @interface PhantomJS {
      */
     Class<? extends WebDriverFactory<? extends PhantomJSDriver>> factory() default DefaultPhantomJSDriverFactory.class;
 
+    /**
+     * The {@link Capabilities} {@link Supplier} injected in {@code factory()}.
+     * 
+     * @return The {@link Capabilities}.
+     */
+    Class<? extends Supplier<? extends Capabilities>> capabilities() default DefaultPhantomJSCapabilities.class;
+    
 }

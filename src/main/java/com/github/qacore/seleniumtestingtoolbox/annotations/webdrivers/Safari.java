@@ -4,11 +4,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
+import java.util.function.Supplier;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.safari.SafariDriver;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverFactory;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.DefaultSafariDriverFactory;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.capabilities.DefaultSafariCapabilities;
 
 /**
  * This annotation indicates to use the {@link SafariDriver}.
@@ -36,4 +39,11 @@ public @interface Safari {
      */
     Class<? extends WebDriverFactory<? extends SafariDriver>> factory() default DefaultSafariDriverFactory.class;
 
+    /**
+     * The {@link Capabilities} {@link Supplier} injected in {@code factory()}.
+     * 
+     * @return The {@link Capabilities}.
+     */
+    Class<? extends Supplier<? extends Capabilities>> capabilities() default DefaultSafariCapabilities.class;
+    
 }

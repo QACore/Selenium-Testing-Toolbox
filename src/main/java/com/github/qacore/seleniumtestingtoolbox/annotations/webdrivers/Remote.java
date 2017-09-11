@@ -4,11 +4,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
+import java.util.function.Supplier;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverFactory;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.DefaultRemoteDriverFactory;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.capabilities.DefaultRemoteDriverCapabilities;
 
 /**
  * This annotation indicates to use the {@link RemoteWebDriver}.
@@ -36,4 +39,11 @@ public @interface Remote {
      */
     Class<? extends WebDriverFactory<? extends RemoteWebDriver>> factory() default DefaultRemoteDriverFactory.class;
 
+    /**
+     * The {@link Capabilities} {@link Supplier} injected in {@code factory()}.
+     * 
+     * @return The {@link Capabilities}.
+     */
+    Class<? extends Supplier<? extends Capabilities>> capabilities() default DefaultRemoteDriverCapabilities.class;
+    
 }

@@ -4,11 +4,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
+import java.util.function.Supplier;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverFactory;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.DefaultInternetExplorerDriverFactory;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.capabilities.DefaultInternetExplorerCapabilities;
 
 /**
  * This annotation indicates to use the {@link InternetExplorerDriver}.
@@ -36,4 +39,11 @@ public @interface InternetExplorer {
      */
     Class<? extends WebDriverFactory<? extends InternetExplorerDriver>> factory() default DefaultInternetExplorerDriverFactory.class;
 
+    /**
+     * The {@link Capabilities} {@link Supplier} injected in {@code factory()}.
+     * 
+     * @return The {@link Capabilities}.
+     */
+    Class<? extends Supplier<? extends Capabilities>> capabilities() default DefaultInternetExplorerCapabilities.class;
+    
 }

@@ -4,11 +4,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
+import java.util.function.Supplier;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverFactory;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.DefaultChromeDriverFactory;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.capabilities.DefaultChromeCapabilities;
 
 /**
  * This annotation indicates to use the {@link ChromeDriver}.
@@ -36,4 +39,11 @@ public @interface Chrome {
      */
     Class<? extends WebDriverFactory<? extends ChromeDriver>> factory() default DefaultChromeDriverFactory.class;
 
+    /**
+     * The {@link Capabilities} {@link Supplier} injected in {@code factory()}.
+     * 
+     * @return The {@link Capabilities}.
+     */
+    Class<? extends Supplier<? extends Capabilities>> capabilities() default DefaultChromeCapabilities.class;
+    
 }

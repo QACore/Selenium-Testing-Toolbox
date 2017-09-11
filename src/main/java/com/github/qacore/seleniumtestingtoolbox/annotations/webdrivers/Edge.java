@@ -4,11 +4,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
+import java.util.function.Supplier;
 
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import com.github.qacore.seleniumtestingtoolbox.WebDriverFactory;
 import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.DefaultEdgeDriverFactory;
+import com.github.qacore.seleniumtestingtoolbox.webdriver.factory.capabilities.DefaultEdgeCapabilities;
 
 /**
  * This annotation indicates to use the {@link EdgeDriver}.
@@ -35,5 +38,11 @@ public @interface Edge {
      * @return The {@link WebDriverFactory}.
      */
     Class<? extends WebDriverFactory<? extends EdgeDriver>> factory() default DefaultEdgeDriverFactory.class;
-
+    
+    /**
+     * The {@link Capabilities} {@link Supplier} injected in {@code factory()}.
+     * 
+     * @return The {@link Capabilities}.
+     */
+    Class<? extends Supplier<? extends Capabilities>> capabilities() default DefaultEdgeCapabilities.class;
 }
